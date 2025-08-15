@@ -9,7 +9,7 @@ import (
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
-func StartGrpcServer(addr string) (*grpc.Server, net.Listener) {
+func StartGRPCServer(addr string) (*grpc.Server, net.Listener) {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatal(err)
@@ -28,6 +28,19 @@ func StartGrpcServer(addr string) (*grpc.Server, net.Listener) {
 			} else {
 				hs.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
 			}
+
+			if ready.Load() {
+				hs.SetServingStatus("ready", healthpb.HealthCheckResponse_SERVING)
+			} else {
+				hs.SetServingStatus("ready", healthpb.HealthCheckResponse_NOT_SERVING)
+			}
+
+			if started.Load() {
+				hs.SetServingStatus("startup", healthpb.HealthCheckResponse_SERVING)
+			} else {
+				hs.SetServingStatus("startup", healthpb.HealthCheckResponse_NOT_SERVING)
+			}
+
 			// 너무 자주 돌지 않게 간단히 sleep
 			sleepMs(500)
 		}
@@ -42,7 +55,7 @@ func StartGrpcServer(addr string) (*grpc.Server, net.Listener) {
 	return s, lis
 }
 
-func ShutdownGrpc(s *grpc.Server, lis net.Listener) {
+func ShutdownGRPC(s *grpc.Server, lis net.Listener) {
 	s.GracefulStop()
 	_ = lis.Close()
 }

@@ -7,7 +7,7 @@ import (
 
 type tcpCloser interface{ Close() error }
 
-func StartTcpListener(addr string) tcpCloser {
+func StartTCPListener(addr string) tcpCloser {
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatal(err)
@@ -25,4 +25,4 @@ func StartTcpListener(addr string) tcpCloser {
 	return ln
 }
 
-func ShutdownTcp(c tcpCloser) { _ = c.Close() }
+func ShutdownTCP(c tcpCloser) { _ = c.Close() }

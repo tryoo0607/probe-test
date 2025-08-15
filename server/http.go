@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func StartHttpServer(addr string) *http.Server {
+func StartHTTPServer(addr string) *http.Server {
 
 	// 멀티 플렉스 생성
 	mux := http.NewServeMux()
@@ -53,7 +53,7 @@ func StartHttpServer(addr string) *http.Server {
 	return srv
 }
 
-func ShutdownHttp(srv *http.Server) {
+func ShutdownHTTP(srv *http.Server) {
 	ctx, cancel := timeoutCtx(5 * time.Second)
 	defer cancel()
 	_ = srv.Shutdown(ctx)
