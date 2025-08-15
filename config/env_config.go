@@ -20,6 +20,8 @@ type Config struct {
 	ProbeDelayLiveness  time.Duration
 	ProbeDelayReadiness time.Duration
 	ProbeDelayStartup   time.Duration
+
+	ProbeDir string
 }
 
 var (
@@ -44,6 +46,8 @@ func Load() *Config {
 		ProbeDelayLiveness:  getEnvDurationSecWithDefault("PROBE_DELAY_LIVENESS_SEC", common),
 		ProbeDelayReadiness: getEnvDurationSecWithDefault("PROBE_DELAY_READINESS_SEC", common),
 		ProbeDelayStartup:   getEnvDurationSecWithDefault("PROBE_DELAY_STARTUP_SEC", common),
+
+		ProbeDir: getEnv("PROBE_DIR", "/tmp/probe"),
 	}
 }
 
