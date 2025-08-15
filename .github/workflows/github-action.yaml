@@ -3,11 +3,18 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
 
 jobs:
   push-image-to-docker-hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +28,17 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: tryoo0607/probe-test
+          tags: |
+            # 브랜치 빌드 → :master 같은 태그
+            type=ref,event=branch
+
+            # 태그 빌드(예: v1.2.3) → semver 태그 세트
+            type=semver,pattern={{version}},value={{tag}}
+            type=semver,pattern={{major}}.{{minor}},value={{tag}}
+            type=semver,pattern={{major}},value={{tag}}
+
+            # 기본 브랜치(master)일 때만 latest 부여(선택)
+            type=raw,value=latest,enable={{is_default_branch}}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
