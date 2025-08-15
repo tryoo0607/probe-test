@@ -28,17 +28,16 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: tryoo0607/probe-test
+          flavor: |
+            latest=false
           tags: |
-            # 브랜치 빌드 → :master 같은 태그
-            type=ref,event=branch
+            # latest 만 생성
+            type=raw,value=latest
 
-            # 태그 빌드(예: v1.2.3) → semver 태그 세트
-            type=semver,pattern={{version}},value={{tag}}
-            type=semver,pattern={{major}}.{{minor}},value={{tag}}
-            type=semver,pattern={{major}},value={{tag}}
-
-            # 기본 브랜치(master)일 때만 latest 부여(선택)
-            type=raw,value=latest,enable={{is_default_branch}}
+            # 기본 브랜치에서만 latest 생성
+            # type=raw,value=latest,enable={{is_default_branch}}
+            # v* 태그 push 시, 그 태그명 그대로 사용 (예: v1.2.3)
+            # type=ref,event=tag
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
