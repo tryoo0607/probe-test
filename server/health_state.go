@@ -14,43 +14,47 @@ var (
 )
 
 func InitHealthState() {
-	changeState("alive", false)
+	alive.Store(false)
+	util.WriteProbe("alive", false)
 
-	changeState("false", false)
+	ready.Store(false)
+	util.WriteProbe("ready", false)
 
-	changeState("startup", false)
+	started.Store(false)
+	util.WriteProbe("startup", false)
 
 	cfg := config.GetInstance()
 
 	// liveness
 	if cfg.ProbeDelayLiveness <= 0 {
-		changeState("alive", true)
+		alive.Store(true)
+		util.WriteProbe("alive", true)
 	} else {
 		time.AfterFunc(cfg.ProbeDelayLiveness, func() {
-			changeState("alive", true)
+			alive.Store(true)
+			util.WriteProbe("alive", true)
 		})
 	}
 
 	// readiness
 	if cfg.ProbeDelayReadiness <= 0 {
-		changeState("ready", true)
+		ready.Store(true)
+		util.WriteProbe("ready", true)
 	} else {
 		time.AfterFunc(cfg.ProbeDelayReadiness, func() {
-			changeState("ready", true)
+			ready.Store(true)
+			util.WriteProbe("ready", true)
 		})
 	}
 
 	// startup
 	if cfg.ProbeDelayStartup <= 0 {
-		changeState("startup", true)
+		started.Store(true)
+		util.WriteProbe("startup", true)
 	} else {
 		time.AfterFunc(cfg.ProbeDelayStartup, func() {
-			changeState("startup", true)
+			started.Store(true)
+			util.WriteProbe("startup", true)
 		})
 	}
-}
-
-func changeState(name string, state bool) {
-	started.Store(state)
-	util.WriteProbe(name, state)
 }
