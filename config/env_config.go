@@ -9,6 +9,10 @@ type Config struct {
 	HTTPPort string
 	TCPPort  string
 	GRPCPort string
+
+	LivenessServiceName  string
+	ReadinessServiceName string
+	StartupServiceName   string
 }
 
 var (
@@ -18,9 +22,12 @@ var (
 
 func Load() *Config {
 	return &Config{
-		HTTPPort: getEnv("HTTP_PORT", "8080"),
-		TCPPort:  getEnv("TCP_PORT", "50051"),
-		GRPCPort: getEnv("GRPC_PORT", "50051"),
+		HTTPPort:             getEnv("HTTP_PORT", "8080"),
+		TCPPort:              getEnv("TCP_PORT", "50051"),
+		GRPCPort:             getEnv("GRPC_PORT", "50051"),
+		LivenessServiceName:  getEnv("LIVENESS_SERVICE_NAME", ""),
+		ReadinessServiceName: getEnv("READINESS_SERVICE_NAME", "ready"),
+		StartupServiceName:   getEnv("STARTUP_SERVICE_NAME", "startup"),
 	}
 }
 

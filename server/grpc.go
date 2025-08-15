@@ -30,21 +30,21 @@ func StartGRPCServer() (*grpc.Server, net.Listener) {
 	go func() {
 		for {
 			if alive.Load() {
-				hs.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
+				hs.SetServingStatus(cfg.LivenessServiceName, healthpb.HealthCheckResponse_SERVING)
 			} else {
-				hs.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
+				hs.SetServingStatus(cfg.LivenessServiceName, healthpb.HealthCheckResponse_NOT_SERVING)
 			}
 
 			if ready.Load() {
-				hs.SetServingStatus("ready", healthpb.HealthCheckResponse_SERVING)
+				hs.SetServingStatus(cfg.ReadinessServiceName, healthpb.HealthCheckResponse_SERVING)
 			} else {
-				hs.SetServingStatus("ready", healthpb.HealthCheckResponse_NOT_SERVING)
+				hs.SetServingStatus(cfg.ReadinessServiceName, healthpb.HealthCheckResponse_NOT_SERVING)
 			}
 
 			if started.Load() {
-				hs.SetServingStatus("startup", healthpb.HealthCheckResponse_SERVING)
+				hs.SetServingStatus(cfg.StartupServiceName, healthpb.HealthCheckResponse_SERVING)
 			} else {
-				hs.SetServingStatus("startup", healthpb.HealthCheckResponse_NOT_SERVING)
+				hs.SetServingStatus(cfg.StartupServiceName, healthpb.HealthCheckResponse_NOT_SERVING)
 			}
 
 			// 너무 자주 돌지 않게 간단히 sleep
