@@ -35,3 +35,9 @@ HTTP, TCP, gRPC 서버를 동시에 실행하며, 각 프로브 상태를 **환�
 | `PROBE_DELAY_LIVENESS_SEC`  | int(seconds) | `PROBE_DELAY_SEC` | ☐        | liveness 전용 지연(초)                                                       |
 | `PROBE_DELAY_READINESS_SEC` | int(seconds) | `PROBE_DELAY_SEC` | ☐        | readiness 전용 지연(초)                                                      |
 | `PROBE_DELAY_STARTUP_SEC`   | int(seconds) | `PROBE_DELAY_SEC` | ☐        | startup 전용 지연(초)                                                        |
+
+
+## Docker build시
+```
+docker build -f docker/Dockerfile -t probe-test:latest .
+```
