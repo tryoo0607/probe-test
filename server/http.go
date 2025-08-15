@@ -3,10 +3,15 @@ package server
 import (
 	"log"
 	"net/http"
+	"probe-test/config"
+	"probe-test/util"
 	"time"
 )
 
-func StartHTTPServer(addr string) *http.Server {
+func StartHTTPServer() *http.Server {
+	// 설정 값 불러오기
+	cfg := config.GetInstance()
+	port := util.ConvertToPortString(cfg.HTTPPort)
 
 	// 멀티 플렉스 생성
 	mux := http.NewServeMux()
@@ -39,12 +44,12 @@ func StartHTTPServer(addr string) *http.Server {
 	})
 
 	srv := &http.Server{
-		Addr:              addr,
+		Addr:              port,
 		Handler:           mux,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	go func() {
-		log.Println("HTTP", addr)
+		log.Println("HTTP", port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal(err)
 		}
@@ -54,7 +59,7 @@ func StartHTTPServer(addr string) *http.Server {
 }
 
 func ShutdownHTTP(srv *http.Server) {
-	ctx, cancel := timeoutCtx(5 * time.Second)
+	ctx, cancel := util.TimeoutCtx(5 * time.Second)
 	defer cancel()
 	_ = srv.Shutdown(ctx)
 }

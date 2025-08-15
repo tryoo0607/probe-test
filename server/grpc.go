@@ -3,14 +3,20 @@ package server
 import (
 	"log"
 	"net"
+	"probe-test/config"
+	"probe-test/util"
 
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
-func StartGRPCServer(addr string) (*grpc.Server, net.Listener) {
-	lis, err := net.Listen("tcp", addr)
+func StartGRPCServer() (*grpc.Server, net.Listener) {
+	// 설정 값 불러오기
+	cfg := config.GetInstance()
+	port := util.ConvertToPortString(cfg.TCPPort)
+
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,12 +48,12 @@ func StartGRPCServer(addr string) (*grpc.Server, net.Listener) {
 			}
 
 			// 너무 자주 돌지 않게 간단히 sleep
-			sleepMs(500)
+			util.SleepMs(500)
 		}
 	}()
 
 	go func() {
-		log.Println("gRPC", addr)
+		log.Println("gRPC", port)
 		if err := s.Serve(lis); err != nil {
 			log.Fatal(err)
 		}
