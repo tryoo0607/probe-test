@@ -25,7 +25,7 @@ func StartTCPListener() tcpCloser {
 			if err != nil {
 				continue
 			}
-			_ = c.Close() // 열려있기만 하면 probe 통과
+			_ = c.Close()
 		}
 	}()
 	return ln

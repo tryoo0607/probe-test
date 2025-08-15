@@ -14,7 +14,7 @@ import (
 func StartGRPCServer() (*grpc.Server, net.Listener) {
 	// 설정 값 불러오기
 	cfg := config.GetInstance()
-	port := util.ConvertToPortString(cfg.TCPPort)
+	port := util.ConvertToPortString(cfg.GRPCPort)
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
