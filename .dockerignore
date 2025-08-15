@@ -1,6 +1,7 @@
 # Git & VCS
 .git
 .gitignore
+.github/
 
 # 문서 (README는 필요시 포함)
 *.md
