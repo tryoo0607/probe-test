@@ -3,14 +3,15 @@ on:
   push:
     branches:
       - master
-    with:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }} 
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }}  
+
 
 jobs:
   push-image-to-docker-hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }} 
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }}  
     permissions:
       packages: write
       contents: read
