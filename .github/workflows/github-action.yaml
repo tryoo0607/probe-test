@@ -4,7 +4,6 @@ on:
     branches:
       - master
 
-
 jobs:
   push-image-to-docker-hub:
     name: Push Docker image to Docker Hub
@@ -55,16 +54,8 @@ jobs:
       #     subject-name: index.docker.io/tryoo0607/probe-test
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
-      - name: Sanity check Docker Hub API perms
-        run: |
-          set -e
-          echo "PATCH status:" \
-            $(curl -s -o /dev/null -w '%{http_code}\n' -u "${{ env.DOCKERHUB_USERNAME }}:${{ env.DOCKERHUB_TOKEN }}" \
-              -X PATCH https://hub.docker.com/v2/repositories/tryoo0607/probe-test/ \
-              -H 'Content-Type: application/json' \
-              -d '{"full_description":"readme sync test (temporary)"}')
       - name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
+        uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae # v4.0.0
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_TOKEN }}

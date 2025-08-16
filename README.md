@@ -1,11 +1,9 @@
 # Kubernetes Pod Probe 테스트용 어플리케이션
 
 ## Link
-[[Github] tryoo0607/probe-test](https://github.com/tryoo0607/probe-test)
+[![GitHub - tryoo0607/probe-test](https://img.shields.io/badge/GitHub-tryoo0607%2Fprobe--test-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tryoo0607/probe-test)
+[![Docker Hub - tryoo0607/probe-test](https://img.shields.io/badge/Docker%20Hub-tryoo0607%2Fprobe--test-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/tryoo0607/probe-test)
 
-<br/>
-
-[[Docker Hub] tryoo0607/probe-test](https://hub.docker.com/r/tryoo0607/probe-test)
 
 <br/>
 <br/>
