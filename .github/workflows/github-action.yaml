@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
+    with:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }} 
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }}  
 
 jobs:
   push-image-to-docker-hub:
@@ -21,8 +22,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
@@ -53,11 +54,20 @@ jobs:
       #     subject-name: index.docker.io/tryoo0607/probe-test
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
+      - name: Sanity check Docker Hub API perms
+        run: |
+          set -e
+          echo "PATCH status:" \
+            $(curl -s -o /dev/null -w '%{http_code}\n' -u "${{ env.DOCKERHUB_USERNAME }}:${{ env.DOCKERHUB_TOKEN }}" \
+              -X PATCH https://hub.docker.com/v2/repositories/tryoo0607/probe-test/ \
+              -H 'Content-Type: application/json' \
+              -d '{"full_description":"readme sync test (temporary)"}')
       - name: Update Docker Hub description
         uses: peter-evans/dockerhub-description@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
           repository: tryoo0607/probe-test           # 본인 리포로 변경
           enable-url-completion: true                # README 내부 상대링크 보정(옵션)
           # readme-filepath: ./docs/README.md        # 루트가 아니면 경로 지정
+          
