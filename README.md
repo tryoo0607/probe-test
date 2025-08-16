@@ -1,11 +1,17 @@
 # Kubernetes Pod Probe 테스트용 어플리케이션
 
-## Dockerhub
-[tryoo0607/probe-test](https://hub.docker.com/r/tryoo0607/probe-test)
+## Link
+[[Github] tryoo0607/probe-test](https://github.com/tryoo0607/probe-test)
+[[Docker Hub] tryoo0607/probe-test](https://hub.docker.com/r/tryoo0607/probe-test)
+
+<br/>
+<br/>
 
 ## 개요
 이 프로젝트는 Kubernetes 환경에서 **liveness**, **readiness**, **startup** 프로브 동작을 테스트하기 위한 **다중 서버 예제**입니다.  
 HTTP, TCP, gRPC 서버를 동시에 실행하며, 각 프로브 상태를 **환경변수로 지정한 지연 시간** 이후 `true`로 전환합니다.
+
+<br/>
 
 ### 주요 기능
 - **HTTP 서버**
@@ -24,6 +30,8 @@ HTTP, TCP, gRPC 서버를 동시에 실행하며, 각 프로브 상태를 **환�
 - **Graceful Shutdown**
   - SIGINT, SIGTERM 수신 시 HTTP, TCP, gRPC 서버 순차 종료
 
+<br/>
+
 ## 환경 변수 (ENV)
 
 | Name                        | Type         | Default           | Required | Description                                                                 |
@@ -39,6 +47,7 @@ HTTP, TCP, gRPC 서버를 동시에 실행하며, 각 프로브 상태를 **환�
 | `PROBE_DELAY_READINESS_SEC` | int(seconds) | `PROBE_DELAY_SEC` | ☐        | readiness 전용 지연(초)                                                      |
 | `PROBE_DELAY_STARTUP_SEC`   | int(seconds) | `PROBE_DELAY_SEC` | ☐        | startup 전용 지연(초)                                                        |
 
+<br/>
 
 ## Docker build시
 ```

@@ -53,3 +53,12 @@ jobs:
           subject-name: index.docker.io/tryoo0607/probe-test
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: tryoo0607/probe-test           # 본인 리포로 변경
+          short-description: ${{ github.event.repository.description }}
+          enable-url-completion: true                # README 내부 상대링크 보정(옵션)
+          # readme-filepath: ./docs/README.md        # 루트가 아니면 경로 지정
